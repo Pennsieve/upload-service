@@ -1,0 +1,513 @@
+swagger: '2.0'
+info:
+  version: 0.1.0
+  title: 'Upload Service'
+host: prod-upload-service-use1.pennsieve.io
+schemes:
+  - https
+tags:
+  - name: Upload
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization
+paths:
+  /health:
+    get:
+      security: []
+      summary: healthcheck
+      operationId: healthcheck
+      x-scala-package: healthcheck
+      description: Ensure the service is responding to requests.
+      responses:
+        200:
+          description: Success
+  /chunk/organizations/{organizationId}/id/{importId}:
+    post:
+      summary: upload chunk as part of a initiated multipart upload
+      description: ''
+      operationId: uploadChunk
+      x-scala-package: upload
+      parameters:
+        - name: organizationId
+          in: path
+          description: organization id
+          required: true
+          type: string
+        - name: importId
+          in: path
+          description: id for the upload
+          required: true
+          type: string
+        - name: filename
+          in: query
+          description: the name of the file being uploaded
+          required: true
+          type: string
+        - name: multipartId
+          in: query
+          description: the id provided in the
+          required: true
+          type: string
+        - name: chunkNumber
+          in: query
+          description: the index of the chunk being uploaded [0 ... n] where n is totalChunks
+          required: true
+          type: integer
+          format: int32
+        - name: chunkSize
+          in: query
+          description: the size (in bytes) of this chunk
+          required: true
+          type: integer
+          format: int64
+        - name: chunkChecksum
+          in: query
+          description: the hex encoded SHA256 hash of the chunk entity being sent
+          required: true
+          type: string
+      responses:
+        201:
+          description: successfully uploaded chunk
+        400:
+          description: request was malformed
+          schema:
+            type: string
+        403:
+          description: forbidden operation
+        500:
+          description: failed to process request
+          schema:
+            type: string
+      security:
+        - Bearer: []
+
+  /fineuploaderchunk/organizations/{organizationId}/id/{importId}:
+    post:
+      summary: upload chunk conforming to the fine uploader's Multipart/FormData spec https://docs.fineuploader.com/branch/master/features/chunking.html
+      description: ''
+      operationId: fineuploaderchunk
+      x-scala-package: upload
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: organizationId
+          in: path
+          description: organization id
+          required: true
+          type: string
+        - name: importId
+          in: path
+          description: id for the upload
+          required: true
+          type: string
+        - name: qqfilename
+          in: formData
+          description: the name of the file being uploaded
+          required: true
+          type: string
+        - name: multipartId
+          in: query
+          description: the id provided in the
+          required: true
+          type: string
+        - name: qqpartindex
+          in: formData
+          description: the index of the chunk being uploaded [0 ... n] where n is totalChunks
+          required: true
+          type: integer
+          format: int32
+        - name: qqchunksize
+          in: formData
+          description: the size (in bytes) of this chunk
+          required: true
+          type: integer
+          format: int64
+        - name: qqtotalfilesize
+          in: formData
+          description: the size (in bytes) of the file itself
+          required: false
+          type: integer
+          format: int64
+        - name: qqfile
+          in: formData
+          description: the file to upload
+          type: file
+      responses:
+        201:
+          description: successfully uploaded chunk
+        400:
+          description: request was malformed
+          schema:
+            type: string
+        403:
+          description: forbidden operation
+        500:
+          description: failed to process request
+          schema:
+            type: string
+      security:
+        - Bearer: []
+
+  /preview/organizations/{organizationId}/:
+    post:
+      summary: preview upload
+      description: ''
+      operationId: preview
+      x-scala-package: upload
+      parameters:
+        - name: organizationId
+          in: path
+          description: organization id
+          required: true
+          type: string
+        - name: append
+          in: query
+          description: indicates that this is a timeseries append upload
+          type: boolean
+          required: false
+        - name: destinationId
+          in: query
+          description: The destination to be uploaded to either timeseries package for append or folder (collection)
+          type: string
+          required: false
+        - name: files
+          in: body
+          description: list of files to be uploaded
+          required: true
+          schema:
+            x-scala-type: '#/definitions/PackagePreviewRequest'
+      responses:
+        201:
+          description: successfully created preview for request
+          schema:
+            x-scala-type: '#/definitions/PackagePreviewResponse'
+        400:
+          description: request was malformed
+          schema:
+            type: string
+        403:
+          description: forbidden operation
+        500:
+          description: failed to process request
+          schema:
+            type: string
+      security:
+        - Bearer: []
+
+  /complete/organizations/{organizationId}/id/{importId}:
+    post:
+      summary: complete upload
+      description: ''
+      operationId: complete
+      x-scala-package: upload
+      parameters:
+        - name: organizationId
+          in: path
+          description: organization id
+          required: true
+          type: string
+        - name: importId
+          in: path
+          description: id for the upload aka importId
+          required: true
+          type: string
+        - name: datasetId
+          in: query
+          description: the ID of the dataset
+          required: true
+          type: string
+        - name: append
+          in: query
+          description: indicates that this is a timeseries append upload
+          type: boolean
+          required: false
+        - name: destinationId
+          in: query
+          description: The place to insert to either a timeseries package for append or a folder (collection)
+          type: string
+          required: false
+        - name: proxyLinks
+          in: body
+          description: describes the model to link this upload to please see files/upload/complete for JSON structure
+          required: true
+          schema:
+            type: object
+
+      responses:
+        200:
+          description: Successfully completed upload see files/upload/complete for JSON structure
+
+        400:
+          description: request was malformed
+          schema:
+            type: string
+        403:
+          description: forbidden operation
+        404:
+          description: not all chunks have been uploaded for one or more files
+          schema:
+            x-scala-type: '#/definitions/FilesMissingChunks'
+        500:
+          description: failed to process request
+          schema:
+            type: string
+
+      security:
+        - Bearer: []
+
+  /status/organizations/{organizationId}/id/{importId}:
+    get:
+      summary: check status of upload
+      description: ''
+      operationId: status
+      x-scala-package: upload
+      parameters:
+        - name: organizationId
+          in: path
+          description: organization id
+          required: true
+          type: string
+        - name: importId
+          in: path
+          description: id for the upload aka importId
+          required: true
+          type: string
+      responses:
+        200:
+          description: Missing chunks need to be uploaded to complete upload
+          schema:
+            x-scala-type: '#/definitions/FilesMissingChunks'
+        201:
+          description: Files exist or all chunks are present please send complete request
+        404:
+          description: No files could be found for that importId
+        400:
+          description: request was malformed
+          schema:
+            type: string
+        403:
+          description: forbidden operation
+        500:
+          description: failed to process request
+          schema:
+            type: string
+
+      security:
+        - Bearer: []
+
+  /hash/id/{importId}:
+    get:
+      summary: get the hash for a uploaded file
+      description: ''
+      operationId: getHash
+      x-scala-package: upload
+      parameters:
+        - name: importId
+          in: path
+          description: id for the upload aka importId
+          required: true
+          type: string
+        - name: filename
+          in: query
+          description: the name of the file being uploaded
+          required: true
+          type: string
+        - name: userId
+          in: query
+          description: user id
+          required: false
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: built hash for file
+          schema:
+            x-scala-type: "#/definitions/FileHash"
+        204:
+          description: some hashes were missing for chunks of requested file
+        404:
+          description: could not find any hashes for supplied file and import id
+        400:
+          description: request was malformed
+          schema:
+            type: string
+        403:
+          description: forbidden operation
+        500:
+          description: failed to process request
+          schema:
+            type: string
+
+      security:
+        - Bearer: []
+
+definitions:
+  FileMissingChunks:
+    type: object
+    required:
+      - fileName
+      - missingParts
+      - expectedTotalParts
+    properties:
+      fileName:
+        type: string
+      missingParts:
+        type: array
+        items:
+          type: integer
+          format: int32
+      expectedTotalParts:
+        type: integer
+        format: int32
+
+  FilesMissingChunks:
+    type: array
+    items:
+      $ref: '#/definitions/FileMissingChunks'
+
+  ChunkedUpload:
+    type: object
+    required:
+      - chunkSize
+      - totalChunks
+    properties:
+      chunkSize:
+        type: integer
+        format: int64
+      totalChunks:
+        type: integer
+        format: int32
+
+  ResponseFile:
+    type: object
+    required:
+      - uploadId
+      - fileName
+      - escapedFileName
+      - size
+      - multipartUploadId
+      - chunkedUpload
+    properties:
+      uploadId:
+        type: integer
+        format: int32
+      fileName:
+        type: string
+      escapedFileName:
+          type: string
+      size:
+        type: integer
+        format: int64
+      checksum:
+        type: string
+      multipartUploadId:
+        type: string
+      chunkedUpload:
+        $ref: '#/definitions/ChunkedUpload'
+
+  Preview:
+    type: object
+    required:
+      - packageName
+      - escapedPackageName
+      - packageType
+      - packageSubtype
+      - fileType
+      - files
+      - warnings
+      - groupSize
+      - hasWorkflow
+      - importId
+      - icon
+    properties:
+      packageName:
+        type: string
+      escapedPackageName:
+        type: string
+      packageType:
+        type: string
+      packageSubtype:
+        type: string
+      fileType:
+        type: string
+      files:
+        type: array
+        items:
+          $ref: '#/definitions/ResponseFile'
+      warnings:
+        type: array
+        items:
+          type: string
+      groupSize:
+        type: integer
+        format: int64
+      hasWorkflow:
+        type: boolean
+      importId:
+        type: string
+      icon:
+        type: string
+      previewPath:
+        type: array
+        items:
+          type: string
+      escapedPreviewPath:
+        type: array
+        items:
+          type: string
+
+  PreviewPackages:
+    type: array
+    items:
+      $ref: '#/definitions/Preview'
+
+  PackagePreviewResponse:
+    type: object
+    required:
+      - packages
+    properties:
+      packages:
+        $ref: '#/definitions/PreviewPackages'
+
+  RequestFile:
+    type: object
+    required:
+      - uploadId
+      - fileName
+      - size
+    properties:
+      uploadId:
+        type: integer
+        format: int32
+      fileName:
+        type: string
+      size:
+        type: integer
+        format: int64
+      filePath:
+        type: array
+        items:
+          type: string
+
+  Files:
+    type: array
+    items:
+      $ref: '#/definitions/RequestFile'
+
+  PackagePreviewRequest:
+    type: object
+    required:
+      - files
+    properties:
+      files:
+        $ref: '#/definitions/Files'
+
+  FileHash:
+    type: object
+    required:
+      - hash
+    properties:
+      hash:
+        type: string

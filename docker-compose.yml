@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  upload-service:
+    image: blackfynn/upload-service
+    ports:
+      - 8080:8080
+    volumes:
+      - /tmp/upload
+    environment:
+      - ENVIRONMENT=local
+      - CLOUDWRAP_ENVIRONMENT=local
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+      - UPLOAD_JWT_SECRET_KEY
+      - PENNSIEVE_API_BASE_URL=https://dev-api-use1.pennsieve.net
+      - PREVIEW_PARALLELISM=4000
+      - PREVIEW_BATCH_WRITE_PARALLELISM=10
+      - PREVIEW_BATCH_WRITE_MAX_RETRIES=5
+      - PREVIEW_METADATA_TABLE_NAME=dev-upload-preview-metadata-table-use1
+      - PREVIEW_FILES_TABLE_NAME=dev-upload-preview-files-table-use1
+      - COMPLETE_PARALLELISM=4000
+      - STATUS_LIST_PARTS_PARALLELISM=100
+      - UPLOAD_BUCKET=pennsieve-dev-uploads-use1
+      - UPLOAD_REGION=us-east-1
+      - CHUNK_HASH_TABLE_NAME=dev-upload-hash-chunk-table-use1
