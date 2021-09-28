@@ -4,8 +4,8 @@ package com.blackfynn.upload.acceptance.chunks
 
 import akka.http.scaladsl.model.StatusCodes.Created
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import com.blackfynn.service.utilities.ContextLogger
-import com.blackfynn.test.AwaitableImplicits
+import com.pennsieve.service.utilities.ContextLogger
+import com.pennsieve.test.AwaitableImplicits
 import com.blackfynn.upload.ChunkPorts.CacheHash
 import com.blackfynn.upload.{ FakeS3Store, LoadMonitor, MockLoadMonitor }
 import com.blackfynn.upload.StubPorts._

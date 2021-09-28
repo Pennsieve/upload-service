@@ -3,8 +3,8 @@
 package com.blackfynn.upload.model
 
 import cats.implicits._
-import com.blackfynn.models.NodeCodes.{ collectionCode, packageCode }
-import com.blackfynn.models.NodeId
+import com.pennsieve.models.NodeCodes.{ collectionCode, packageCode }
+import com.pennsieve.models.NodeId
 import io.circe.{ Decoder, Encoder }
 
 trait PackageId {

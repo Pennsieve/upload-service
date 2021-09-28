@@ -4,7 +4,7 @@ package com.blackfynn.upload.model
 
 import java.util.UUID
 
-import com.blackfynn.models.{ FileType, PackageType }
+import com.pennsieve.models.{ FileType, PackageType }
 import com.blackfynn.upload.TestData.defaultFileHash
 import io.circe.parser._
 import io.circe.syntax._

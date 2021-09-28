@@ -3,7 +3,7 @@
 package com.blackfynn.upload
 
 import com.amazonaws.regions.Regions
-import com.blackfynn.auth.middleware.Jwt
+import com.pennsieve.auth.middleware.Jwt
 
 final case class UploadConfig(
   host: String,

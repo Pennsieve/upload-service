@@ -12,8 +12,8 @@ import akka.http.scaladsl.server.directives.MarshallingDirectives.{ as, entity }
 import akka.stream.Materializer
 import akka.stream.alpakka.s3.S3Settings
 import cats.implicits._
-import com.blackfynn.auth.middleware.{ DatasetId, Jwt, UserId }
-import com.blackfynn.service.utilities.{ ContextLogger, LogContext, Tier }
+import com.pennsieve.auth.middleware.{ DatasetId, Jwt, UserId }
+import com.pennsieve.service.utilities.{ ContextLogger, LogContext, Tier }
 import com.blackfynn.upload.model._
 import com.blackfynn.upload.{ Preview, PreviewPorts, UploadConfig, UploadLogContext, UploadPorts }
 import io.circe.parser.decode

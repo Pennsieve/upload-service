@@ -19,8 +19,8 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{ PathMatcher, RequestContext, Route }
 import akka.stream.Materializer
 import akka.stream.scaladsl.Sink
-import com.blackfynn.auth.middleware.Jwt.{ DatasetRole, OrganizationRole, Role }
-import com.blackfynn.auth.middleware.{
+import com.pennsieve.auth.middleware.Jwt.{ DatasetRole, OrganizationRole, Role }
+import com.pennsieve.auth.middleware.{
   DatasetId,
   DatasetPermission,
   EncryptionKeyId,
@@ -30,7 +30,7 @@ import com.blackfynn.auth.middleware.{
   Validator,
   Wildcard
 }
-import com.blackfynn.service.utilities.{ ContextLogger, LogContext, Tier }
+import com.pennsieve.service.utilities.{ ContextLogger, LogContext, Tier }
 import com.blackfynn.upload.model.UploadResponse
 import io.circe.syntax.EncoderOps
 import shapeless.syntax.inject.InjectSyntax

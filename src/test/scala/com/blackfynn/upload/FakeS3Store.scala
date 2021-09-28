@@ -10,7 +10,7 @@ import akka.stream.alpakka.s3.impl.{ MultipartUpload, S3Location }
 import akka.stream.scaladsl.Sink
 import akka.util.ByteString
 import com.amazonaws.services.s3.model.{ PartListing, PartSummary }
-import com.blackfynn.test.AwaitableImplicits
+import com.pennsieve.test.AwaitableImplicits
 import com.blackfynn.upload.ChunkPorts.SendChunk
 import com.blackfynn.upload.CompletePorts.CompleteUpload
 import com.blackfynn.upload.UploadPorts.ListParts

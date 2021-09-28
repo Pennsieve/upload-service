@@ -38,7 +38,7 @@ import com.amazonaws.services.dynamodbv2.model.{
 import com.amazonaws.services.dynamodbv2.{ AmazonDynamoDBAsync, AmazonDynamoDBAsyncClientBuilder }
 import com.amazonaws.services.s3.model.PartListing
 import com.amazonaws.services.s3.model.transform.Unmarshallers.ListPartsResultUnmarshaller
-import com.blackfynn.service.utilities.ContextLogger
+import com.pennsieve.service.utilities.ContextLogger
 import com.blackfynn.upload.ChunkPorts.{ CacheHash, SendChunk }
 import com.blackfynn.upload.CompletePorts.{ apply => _, unapply => _, _ }
 import com.blackfynn.upload.HashPorts.GetChunkHashes

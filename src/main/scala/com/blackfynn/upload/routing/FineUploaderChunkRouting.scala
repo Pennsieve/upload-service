@@ -12,8 +12,8 @@ import akka.http.scaladsl.server.directives.MarshallingDirectives.as
 import akka.stream.Materializer
 import akka.stream.alpakka.s3.S3Settings
 import cats.implicits._
-import com.blackfynn.auth.middleware.Jwt.Claim
-import com.blackfynn.service.utilities.{ ContextLogger, LogContext, Tier }
+import com.pennsieve.auth.middleware.Jwt.Claim
+import com.pennsieve.service.utilities.{ ContextLogger, LogContext, Tier }
 import com.blackfynn.upload.model.{ ImportId, MultipartUploadId }
 import com.blackfynn.upload.send.FineUploaderChunkUpload.sendChunk
 import com.blackfynn.upload.send.{ ChunkSizeTooLargeException, MissingParameter }

@@ -14,8 +14,8 @@ import akka.stream.scaladsl.{ Sink, Source }
 import akka.util.ByteString
 import cats.data.EitherT
 import cats.implicits._
-import com.blackfynn.auth.middleware.UserId
-import com.blackfynn.service.utilities.{ ContextLogger, LogContext, Tier }
+import com.pennsieve.auth.middleware.UserId
+import com.pennsieve.service.utilities.{ ContextLogger, LogContext, Tier }
 import com.blackfynn.upload.alpakka.S3Requests.uploadPartRequest
 import com.blackfynn.upload.alpakka.Signer
 import com.blackfynn.upload.model.Constants.MaxChunkSize

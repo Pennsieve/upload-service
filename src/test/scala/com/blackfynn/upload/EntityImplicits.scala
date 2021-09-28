@@ -4,7 +4,7 @@ package com.blackfynn.upload
 import akka.http.scaladsl.model.HttpEntity
 import akka.stream.Materializer
 import akka.util.ByteString
-import com.blackfynn.test.AwaitableImplicits
+import com.pennsieve.test.AwaitableImplicits
 
 import scala.concurrent.ExecutionContext
 

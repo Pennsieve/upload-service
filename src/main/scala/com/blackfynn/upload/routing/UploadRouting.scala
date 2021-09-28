@@ -16,8 +16,8 @@ import akka.http.scaladsl.server.directives.BasicDirectives.extractRequestContex
 import akka.http.scaladsl.server.{ ExceptionHandler, RequestContext, Route }
 import akka.stream.Materializer
 import akka.stream.alpakka.s3.S3Settings
-import com.blackfynn.auth.middleware.AkkaDirective.authenticateJwt
-import com.blackfynn.service.utilities.ContextLogger
+import com.pennsieve.auth.middleware.AkkaDirective.authenticateJwt
+import com.pennsieve.service.utilities.ContextLogger
 import com.blackfynn.upload.{ LoadMonitor, UploadConfig, UploadPorts }
 
 import scala.concurrent.{ ExecutionContext, TimeoutException }

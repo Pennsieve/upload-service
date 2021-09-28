@@ -17,7 +17,7 @@ import com.amazonaws.services.dynamodbv2.model.{
   QueryRequest,
   QueryResult
 }
-import com.blackfynn.service.utilities.ContextLogger
+import com.pennsieve.service.utilities.ContextLogger
 import com.blackfynn.upload.model.Eventual.Eventual
 import io.circe.Decoder
 import io.circe.parser.decode
