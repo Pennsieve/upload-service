@@ -4,7 +4,7 @@ lazy val AwsVersion = "1.11.538"
 lazy val CatsVersion = "1.6.0"
 lazy val CirceVersion = "0.11.1"
 lazy val LogbackVersion = "1.2.3"
-lazy val UtilitiesVersion = "0.1.10-SNAPSHOT"
+lazy val UtilitiesVersion = "3-cd7539b"
 
 lazy val root = (project in file("."))
   .enablePlugins(AutomateHeaderPlugin)
@@ -63,11 +63,11 @@ lazy val root = (project in file("."))
 
       "org.apache.commons"          % "commons-io"                     % "1.3.2",
 
-      "com.blackfynn"              %% "service-utilities"              % "1.3.4-SNAPSHOT",
-      "com.blackfynn"              %% "utilities"                      % UtilitiesVersion,
-      "com.blackfynn"              %% "auth-middleware"                % "4.2.2",
+      "com.pennsieve"              %% "service-utilities"              % "7-3a0e351",
+      "com.pennsieve"              %% "utilities"                      % UtilitiesVersion,
+      "com.pennsieve"              %% "auth-middleware"                % "5.0.4",
 
-      "com.blackfynn"              %% "core-models"                    % "106-9ebbc7e",
+      "com.pennsieve"              %% "core-models"                    % "106-9ebbc7e",
 
       "ch.qos.logback"              % "logback-classic"                % LogbackVersion,
       "ch.qos.logback"              % "logback-core"                   % LogbackVersion,
