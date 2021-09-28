@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Blackfynn, Inc. All Rights Reserved.
 
 package com.blackfynn.upload.model
-import com.blackfynn.concepts.ProxyTargetLinkRequest
+import com.pennsieve.concepts.ProxyTargetLinkRequest
 import io.circe.{ Decoder, Encoder }
 import io.circe.generic.semiauto._
 

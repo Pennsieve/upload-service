@@ -15,9 +15,9 @@ import akka.stream.alpakka.s3.S3Settings
 import akka.stream.alpakka.s3.impl.{ MultipartUpload, S3Location }
 import akka.util.ByteString
 import com.amazonaws.services.s3.model.PartListing
-import com.blackfynn.auth.middleware.Jwt.Role.RoleIdentifier
-import com.blackfynn.auth.middleware.Jwt.{ DatasetRole, OrganizationRole }
-import com.blackfynn.auth.middleware.{
+import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
+import com.pennsieve.auth.middleware.Jwt.{ DatasetRole, OrganizationRole }
+import com.pennsieve.auth.middleware.{
   DatasetId,
   DatasetNodeId,
   EncryptionKeyId,
@@ -29,11 +29,11 @@ import com.blackfynn.auth.middleware.{
   UserId,
   Wildcard
 }
-import com.blackfynn.models.FileType.ZIP
-import com.blackfynn.models.PackageType.Unsupported
-import com.blackfynn.models.Utilities._
-import com.blackfynn.models.{ NodeCodes, NodeId, Role }
-import com.blackfynn.service.utilities.ContextLogger
+import com.pennsieve.models.FileType.ZIP
+import com.pennsieve.models.PackageType.Unsupported
+import com.pennsieve.models.Utilities._
+import com.pennsieve.models.{ NodeCodes, NodeId, Role }
+import com.pennsieve.service.utilities.ContextLogger
 import com.blackfynn.upload.ChunkPorts.{ CacheHash, SendChunk }
 import com.blackfynn.upload.CompletePorts.{ apply => _, _ }
 import com.blackfynn.upload.HashPorts.GetChunkHashes

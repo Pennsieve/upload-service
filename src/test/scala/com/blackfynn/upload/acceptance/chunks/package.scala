@@ -7,7 +7,7 @@ import akka.http.scaladsl.model.{ HttpEntity, HttpRequest, MediaTypes, Multipart
 import akka.http.scaladsl.server.Route
 import akka.stream.alpakka.s3.S3Settings
 import akka.util.ByteString
-import com.blackfynn.service.utilities.ContextLogger
+import com.pennsieve.service.utilities.ContextLogger
 import com.blackfynn.upload.ChunkPorts.{ CacheHash, SendChunk }
 import com.blackfynn.upload.LoadMonitor
 import com.blackfynn.upload.StubPorts.{ createPorts, stubUploadConfig }

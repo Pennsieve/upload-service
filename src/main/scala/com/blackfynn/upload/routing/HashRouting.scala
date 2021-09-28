@@ -8,9 +8,9 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.Materializer
 import cats.implicits._
-import com.blackfynn.auth.middleware.Jwt.Claim
-import com.blackfynn.auth.middleware.UserId
-import com.blackfynn.service.utilities.{ ContextLogger, Tier }
+import com.pennsieve.auth.middleware.Jwt.Claim
+import com.pennsieve.auth.middleware.UserId
+import com.pennsieve.service.utilities.{ ContextLogger, Tier }
 import com.blackfynn.upload.model.ImportId
 import com.blackfynn.upload._
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._

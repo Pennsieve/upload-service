@@ -9,12 +9,12 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import cats.data.EitherT
 import cats.implicits._
-import com.blackfynn.auth.middleware.DatasetId
-import com.blackfynn.models.FileType.ZIP
-import com.blackfynn.models.Utilities.escapeName
-import com.blackfynn.models.{ FileType, PackageType, Role }
-import com.blackfynn.service.utilities.ContextLogger
-import com.blackfynn.test.AwaitableImplicits
+import com.pennsieve.auth.middleware.DatasetId
+import com.pennsieve.models.FileType.ZIP
+import com.pennsieve.models.Utilities.escapeName
+import com.pennsieve.models.{ FileType, PackageType, Role }
+import com.pennsieve.service.utilities.ContextLogger
+import com.pennsieve.test.AwaitableImplicits
 import com.blackfynn.upload.PreviewPorts.{ CachePreview, InitiateUpload }
 import com.blackfynn.upload.StubPorts._
 import com.blackfynn.upload.TestAuthentication._

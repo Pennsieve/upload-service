@@ -2,7 +2,7 @@
 
 package com.blackfynn.upload.model
 
-import com.blackfynn.auth.middleware.UserId
+import com.pennsieve.auth.middleware.UserId
 import com.blackfynn.upload.model.Constants.PreviewKey
 
 case class UploadUri(userId: UserId, importId: ImportId, name: String) {

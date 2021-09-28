@@ -2,9 +2,9 @@
 
 package com.blackfynn.upload.model
 
-import com.blackfynn.models.Utilities.escapeName
+import com.pennsieve.models.Utilities.escapeName
 import io.circe.{ Decoder, Encoder, HCursor }
-import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
+import io.circe.generic.semiauto.{ deriveEncoder }
 
 case class UserFile(
   uploadId: Int,

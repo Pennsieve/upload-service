@@ -8,8 +8,8 @@ import akka.stream.alpakka.s3.S3Settings
 import akka.stream.scaladsl.{ Sink, Source }
 import cats.data.EitherT
 import cats.implicits._
-import com.blackfynn.auth.middleware.UserId
-import com.blackfynn.service.utilities.ContextLogger
+import com.pennsieve.auth.middleware.UserId
+import com.pennsieve.service.utilities.ContextLogger
 import com.blackfynn.upload.UploadPorts.ListParts
 import com.blackfynn.upload.alpakka.S3Requests.listMultipartUploadRequest
 import com.blackfynn.upload.alpakka.Signer.createSignedRequestT

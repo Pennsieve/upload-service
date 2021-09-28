@@ -7,7 +7,7 @@ import akka.http.scaladsl.model.{ HttpRequest, Uri }
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import cats.implicits._
-import com.blackfynn.service.utilities.ContextLogger
+import com.pennsieve.service.utilities.ContextLogger
 import com.blackfynn.upload.StubPorts._
 import com.blackfynn.upload.StubRoutes._
 import com.blackfynn.upload.TestAuthentication._

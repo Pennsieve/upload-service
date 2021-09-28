@@ -7,10 +7,10 @@ import akka.http.scaladsl.server.{ RequestContext, Route }
 import akka.stream.Materializer
 import akka.stream.alpakka.s3.S3Settings
 import cats.implicits._
-import com.blackfynn.auth.middleware.Jwt
-import com.blackfynn.service.utilities.{ ContextLogger, Tier }
+import com.pennsieve.auth.middleware.Jwt
+import com.pennsieve.service.utilities.{ ContextLogger, Tier }
 import com.blackfynn.upload.model._
-import com.blackfynn.upload.{ Complete, CompletePorts, UploadConfig, UploadLogContext, UploadPorts }
+import com.blackfynn.upload.{ Complete, UploadConfig, UploadLogContext, UploadPorts }
 
 import scala.concurrent.ExecutionContext
 

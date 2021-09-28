@@ -10,8 +10,8 @@ import akka.stream.alpakka.s3.impl._
 import akka.stream.scaladsl.{ Sink, Source }
 import cats.data.EitherT
 import cats.implicits._
-import com.blackfynn.auth.middleware.{ EncryptionKeyId, UserId }
-import com.blackfynn.models.FileTypeGrouping
+import com.pennsieve.auth.middleware.{ UserId }
+import com.pennsieve.models.FileTypeGrouping
 import com.blackfynn.upload.alpakka.S3Requests.initiateMultipartUploadRequest
 import com.blackfynn.upload.alpakka.Signer.createSignedRequestT
 import com.blackfynn.upload.model.Eventual.Eventual

@@ -14,10 +14,10 @@ import akka.http.scaladsl.testkit.ScalatestRouteTest
 import akka.stream.scaladsl.Source
 import cats.implicits._
 import com.amazonaws.services.s3.model.{ PartListing, PartSummary }
-import com.blackfynn.auth.middleware.UserId
-import com.blackfynn.models.NodeCodes.packageCode
-import com.blackfynn.service.utilities.ContextLogger
-import com.blackfynn.test.AwaitableImplicits
+import com.pennsieve.auth.middleware.UserId
+import com.pennsieve.models.NodeCodes.packageCode
+import com.pennsieve.service.utilities.ContextLogger
+import com.pennsieve.test.AwaitableImplicits
 import com.blackfynn.upload.EntityImplicits.RichHttpEntity
 import com.blackfynn.upload.StubPorts._
 import com.blackfynn.upload.StubRoutes._

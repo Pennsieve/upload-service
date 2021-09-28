@@ -16,8 +16,8 @@ import akka.stream.alpakka.s3.S3Settings
 import akka.util.ByteString
 import cats.data.EitherT
 import cats.implicits._
-import com.blackfynn.auth.middleware.Jwt
-import com.blackfynn.service.utilities.{ ContextLogger, Tier }
+import com.pennsieve.auth.middleware.Jwt
+import com.pennsieve.service.utilities.{ ContextLogger, Tier }
 import com.blackfynn.upload.model.Eventual.Eventual
 import com.blackfynn.upload.model.{ ImportId, MultipartUploadId, UploadUri }
 import com.blackfynn.upload.send.StreamedChunkUpload.sendChunk
@@ -61,7 +61,7 @@ object StreamedChunkRouting {
           {
             extractRequest { request =>
               {
-                implicit val chunkPorts: ChunkPorts = ports.chunk
+//                implicit val chunkPorts: ChunkPorts = ports.chunk
 
                 log.noContext.info("StreamedChunkRouting: received request")
 

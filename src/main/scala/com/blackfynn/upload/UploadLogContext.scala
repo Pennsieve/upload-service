@@ -2,8 +2,8 @@
 
 package com.blackfynn.upload
 
-import com.blackfynn.auth.middleware.UserId
-import com.blackfynn.service.utilities.LogContext
+import com.pennsieve.auth.middleware.UserId
+import com.pennsieve.service.utilities.LogContext
 import com.blackfynn.upload.model.ImportId
 
 final case class UploadLogContext(

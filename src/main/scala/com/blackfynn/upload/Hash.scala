@@ -9,7 +9,7 @@ import akka.stream.scaladsl.Sink
 import cats.data.{ EitherT, NonEmptyList }
 import cats.implicits._
 import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException
-import com.blackfynn.service.utilities.{ ContextLogger, Tier }
+import com.pennsieve.service.utilities.{ ContextLogger, Tier }
 import com.blackfynn.upload.model.Eventual.Eventual
 import com.blackfynn.upload.model._
 

@@ -8,8 +8,8 @@ import java.util.UUID
 import akka.stream.alpakka.s3.auth.encodeHex
 import akka.util.ByteString
 import cats.data.NonEmptyList
-import com.blackfynn.models.Utilities._
-import com.blackfynn.models.{ FileType, FileTypeGrouping, FileTypeInfo, PackageType }
+import com.pennsieve.models.Utilities._
+import com.pennsieve.models.{ FileType, FileTypeGrouping, FileTypeInfo, PackageType }
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder, HCursor, Json }

@@ -9,8 +9,8 @@ import akka.http.scaladsl.model.StatusCodes.{
   TooManyRequests
 }
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import com.blackfynn.service.utilities.ContextLogger
-import com.blackfynn.test.AwaitableImplicits
+import com.pennsieve.service.utilities.ContextLogger
+import com.pennsieve.test.AwaitableImplicits
 import com.blackfynn.upload.StubPorts._
 import com.blackfynn.upload.StubRoutes.stubRoutes
 import com.blackfynn.upload.TestData._

@@ -12,7 +12,7 @@ import akka.stream.scaladsl.{ Sink, Source }
 import akka.util.ByteString
 import cats.data.EitherT
 import cats.implicits._
-import com.blackfynn.service.utilities.{ ContextLogger, Tier }
+import com.pennsieve.service.utilities.{ ContextLogger, Tier }
 import com.blackfynn.upload.Status.{ createListRequest, getAllParts, InvalidPreviewException }
 import com.blackfynn.upload.alpakka.S3Requests.{ completeMultipartUploadRequest, headObjectRequest }
 import com.blackfynn.upload.alpakka.Signer._
