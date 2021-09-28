@@ -67,7 +67,7 @@ lazy val root = (project in file("."))
       "com.blackfynn"              %% "utilities"                      % UtilitiesVersion,
       "com.blackfynn"              %% "auth-middleware"                % "4.2.2",
 
-      "com.blackfynn"              %% "core-models"                    % "41-826c2a8",
+      "com.blackfynn"              %% "core-models"                    % "106-9ebbc7e",
 
       "ch.qos.logback"              % "logback-classic"                % LogbackVersion,
       "ch.qos.logback"              % "logback-core"                   % LogbackVersion,
