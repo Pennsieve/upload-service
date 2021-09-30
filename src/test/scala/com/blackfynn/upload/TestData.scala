@@ -61,6 +61,9 @@ class MockLoadMonitor extends LoadMonitor {
 
 object TestData {
 
+  private def cleanS3Key(key: String): String =
+    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
+
   val defaultOrganizationId: Int = 1
   val defaultUserId: Int = 1
   val defaultImportId: ImportId = ImportId(UUID.randomUUID())
@@ -81,7 +84,7 @@ object TestData {
   val somePlusName: String = "some+.zip"
 
   val someZipName: String = "some^.zip"
-  val escapedSomeZipName: String = escapeName(someZipName)
+  val escapedSomeZipName: String = cleanS3Key(someZipName)
   val zipPackagePreview: PackagePreview =
     PackagePreview(
       PackagePreviewMetadata(

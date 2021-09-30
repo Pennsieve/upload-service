@@ -2,7 +2,7 @@
 
 package com.blackfynn.upload.model
 
-import com.pennsieve.models.Utilities.escapeName
+//import com.pennsieve.models.Utilities.escapeName
 import io.circe.{ Decoder, Encoder, HCursor }
 import io.circe.generic.semiauto.{ deriveEncoder }
 
@@ -18,6 +18,9 @@ case class UserFile(
 
 object UserFile {
 
+  private def cleanS3Key(key: String): String =
+    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
+
   implicit val encoder: Encoder[UserFile] = deriveEncoder[UserFile]
 
   implicit val decoder: Decoder[UserFile] = new Decoder[UserFile] {
@@ -25,7 +28,7 @@ object UserFile {
       for {
         uploadId <- c.downField("uploadId").as[Int]
         fileName <- c.downField("fileName").as[String]
-        escapedFileName <- c.getOrElse("escapedFileName")(escapeName(fileName))
+        escapedFileName <- c.getOrElse("escapedFileName")(cleanS3Key(fileName))
         size <- c.downField("size").as[Long]
         fileHash <- c.downField("fileHash").as[Option[FileHash]]
         chunkSize <- c.downField("chunkSize").as[Option[Long]]
@@ -53,7 +56,7 @@ object UserFile {
     new UserFile(
       uploadId = uploadId,
       fileName = fileName,
-      escapedFileName = escapeName(fileName),
+      escapedFileName = cleanS3Key(fileName),
       size = size,
       fileHash = fileHash,
       chunkSize = chunkSize,
@@ -72,7 +75,7 @@ object UserFile {
     new UserFile(
       uploadId = uploadId,
       fileName = fileName,
-      escapedFileName = escapeName(fileName),
+      escapedFileName = cleanS3Key(fileName),
       size = size,
       fileHash = fileHash,
       chunkSize = chunkSize,

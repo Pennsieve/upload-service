@@ -8,7 +8,7 @@ import java.util.UUID
 import akka.stream.alpakka.s3.auth.encodeHex
 import akka.util.ByteString
 import cats.data.NonEmptyList
-import com.pennsieve.models.Utilities._
+//import com.pennsieve.models.Utilities._
 import com.pennsieve.models.{ FileType, FileTypeGrouping, FileTypeInfo, PackageType }
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.syntax._
@@ -81,6 +81,9 @@ object PackagePreview {
         (("files" -> preview.files.asJson) +: metadataObject).asJson
       }
     }
+
+  private def cleanS3Key(key: String): String =
+    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
 
   def fromFiles(
     fileUploads: List[FileUpload],
@@ -157,7 +160,7 @@ object PackagePreview {
         PackagePreview(
           metadata = PackagePreviewMetadata(
             packageName,
-            escapeName(packageName),
+            cleanS3Key(packageName),
             packageInfo.packageType,
             packageInfo.packageSubtype,
             fileType,
@@ -257,6 +260,7 @@ final case class PreviewFile(
     digest.update(fileName.getBytes)
     encodeHex(ByteString(digest.digest()))
   }
+
 }
 
 object PreviewFile {
@@ -266,11 +270,14 @@ object PreviewFile {
   implicit val encoderS3File: Encoder[PreviewFile] = deriveEncoder[PreviewFile]
   implicit val s3Decoder: Decoder[PreviewFile] = deriveDecoder[PreviewFile]
 
+  private def cleanS3Key(key: String): String =
+    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
+
   def apply(file: FileUpload): PreviewFile =
     PreviewFile(
       file.uploadId,
       file.fileName,
-      escapeName(file.fileName),
+      cleanS3Key(file.fileName),
       file.size,
       chunkedUpload = Some(ChunkedUpload(file.size))
     )
@@ -279,7 +286,7 @@ object PreviewFile {
     PreviewFile(
       uploadId,
       fileName,
-      escapeName(fileName),
+      cleanS3Key(fileName),
       size,
       chunkedUpload = Some(ChunkedUpload(size))
     )
@@ -294,7 +301,7 @@ object PreviewFile {
     PreviewFile(
       uploadId,
       fileName,
-      escapeName(fileName),
+      cleanS3Key(fileName),
       size,
       Some(MultipartUploadId(multipartUploadId)),
       Some(chunkedUpload)
