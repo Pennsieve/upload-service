@@ -308,14 +308,7 @@ object PreviewFile {
     multipartUploadId: Option[MultipartUploadId] = None,
     chunkedUpload: Option[ChunkedUpload] = None
   ): PreviewFile =
-    new PreviewFile(
-      uploadId,
-      fileName.replace("+", "%2B"),
-      escapedFileName,
-      size,
-      multipartUploadId,
-      chunkedUpload
-    )
+    new PreviewFile(uploadId, fileName, escapedFileName, size, multipartUploadId, chunkedUpload)
 }
 
 final case class ChunkedUpload(chunkSize: Long, totalChunks: Int)
