@@ -156,7 +156,7 @@ class UploadPreviewSpec
         packages.head.metadata.packageName shouldBe "Test+MEF.mef"
         packages.head.metadata.escapedPackageName shouldBe "Test%2BMEF.mef"
         packages.head.files.length shouldBe 1
-        packages.head.files.head.fileName shouldBe "Test%2BMEF.mef"
+        packages.head.files.head.fileName shouldBe "Test+MEF.mef"
         packages.head.files.head.escapedFileName shouldBe "Test%2BMEF.mef"
 
       }
@@ -680,7 +680,7 @@ class UploadPreviewSpec
         packages.head.metadata.packageName shouldBe "Test+MEF.mef"
         packages.head.metadata.escapedPackageName shouldBe "Test%2BMEF.mef"
         packages.head.files.length shouldBe 1
-        packages.head.files.head.fileName shouldBe "Test%2BMEF.mef"
+        packages.head.files.head.fileName shouldBe "Test+MEF.mef"
         packages.head.files.head.escapedFileName shouldBe "Test%2BMEF.mef"
       }
     }

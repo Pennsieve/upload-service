@@ -8,13 +8,16 @@ import com.blackfynn.upload.model.Constants.PreviewKey
 case class UploadUri(userId: UserId, importId: ImportId, name: String) {
   override def toString: String = s"${userId.value}/$importId/$s3SafeName"
 
-  def s3SafeName = name.replace("+", "%2B")
+  def s3SafeName = cleanS3Key(name)
   def previewUri = UploadPreviewUri(userId, importId)
+
+  private def cleanS3Key(key: String): String =
+    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
 }
 
 object UploadUri {
   def apply(userId: UserId, importId: ImportId, name: String) = {
-    new UploadUri(userId, importId, name.replace("+", "%2B"))
+    new UploadUri(userId, importId, name)
   }
 }
 

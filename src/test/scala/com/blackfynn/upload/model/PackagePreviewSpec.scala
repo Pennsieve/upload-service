@@ -46,7 +46,7 @@ class PackagePreviewSpec extends WordSpec with Matchers {
       |  "files" : [
       |    {
       |      "uploadId" : 0,
-      |      "fileName" : "file%2Bname",
+      |      "fileName" : "file+name",
       |      "escapedFileName" : "file%2Bname",
       |      "size" : 10,
       |      "multipartUploadId" : "multi-part-id",
@@ -74,7 +74,7 @@ class PackagePreviewSpec extends WordSpec with Matchers {
       |  "files" : [
       |    {
       |      "uploadId" : 0,
-      |      "fileName" : "file%2Bname",
+      |      "fileName" : "file+name",
       |      "escapedFileName" : "file%2Bname",
       |      "size" : 10,
       |      "fileHash": { "hash": "${defaultFileHash.hash}" },
@@ -103,7 +103,7 @@ class PackagePreviewSpec extends WordSpec with Matchers {
       |  "files" : [
       |    {
       |      "uploadId" : 0,
-      |      "fileName" : "file%2Bname",
+      |      "fileName" : "file+name",
       |      "escapedFileName" : "file%2Bname",
       |      "size" : 10,
       |      "fileHash": "${defaultFileHash.hash}",
@@ -138,7 +138,7 @@ class PackagePreviewSpec extends WordSpec with Matchers {
 
     "decode api preview from expected json" in {
       val fileHashes =
-        Map[String, FileHash]("file%2Bname" -> defaultFileHash)
+        Map[String, FileHash]("file+name" -> defaultFileHash)
 
       val expectedApiPackagePreview = preview.toApiPreview(fileHashes)
 
