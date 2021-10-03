@@ -31,7 +31,7 @@ import com.pennsieve.auth.middleware.{
 }
 import com.pennsieve.models.FileType.ZIP
 import com.pennsieve.models.PackageType.Unsupported
-import com.pennsieve.models.Utilities._
+import com.pennsieve.models.Utilities.cleanS3Key
 import com.pennsieve.models.{ NodeCodes, NodeId, Role }
 import com.pennsieve.service.utilities.ContextLogger
 import com.blackfynn.upload.ChunkPorts.{ CacheHash, SendChunk }
@@ -60,9 +60,6 @@ class MockLoadMonitor extends LoadMonitor {
 }
 
 object TestData {
-
-  private def cleanS3Key(key: String): String =
-    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
 
   val defaultOrganizationId: Int = 1
   val defaultUserId: Int = 1

@@ -4,6 +4,7 @@ package com.blackfynn.upload.model
 
 import com.pennsieve.auth.middleware.UserId
 import com.blackfynn.upload.model.Constants.PreviewKey
+import com.pennsieve.models.Utilities.cleanS3Key
 
 case class UploadUri(userId: UserId, importId: ImportId, name: String) {
   override def toString: String = s"${userId.value}/$importId/$s3SafeName"
@@ -11,8 +12,6 @@ case class UploadUri(userId: UserId, importId: ImportId, name: String) {
   def s3SafeName = cleanS3Key(name)
   def previewUri = UploadPreviewUri(userId, importId)
 
-  private def cleanS3Key(key: String): String =
-    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
 }
 
 object UploadUri {
