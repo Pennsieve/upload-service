@@ -21,6 +21,7 @@ import com.blackfynn.upload.TestData._
 import com.blackfynn.upload.model._
 import com.blackfynn.upload.routing.UploadRouting
 import com.blackfynn.upload.{ FakeS3Store, LoadMonitor, MockLoadMonitor }
+import com.pennsieve.models.Utilities.cleanS3Key
 import io.circe.parser.decode
 import io.circe.syntax.EncoderOps
 import org.scalatest.{ Matchers, WordSpecLike }
@@ -37,9 +38,6 @@ class UploadPreviewSpec
 
   implicit val log: ContextLogger = new ContextLogger()
   implicit val loadMonitor: LoadMonitor = new MockLoadMonitor()
-
-  private def cleanS3Key(key: String): String =
-    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
 
   "POST upload/preview/organizations/{organizationId}" should {
 

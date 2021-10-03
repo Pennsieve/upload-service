@@ -8,7 +8,7 @@ import java.util.UUID
 import akka.stream.alpakka.s3.auth.encodeHex
 import akka.util.ByteString
 import cats.data.NonEmptyList
-//import com.pennsieve.models.Utilities._
+import com.pennsieve.models.Utilities.cleanS3Key
 import com.pennsieve.models.{ FileType, FileTypeGrouping, FileTypeInfo, PackageType }
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.syntax._
@@ -81,9 +81,6 @@ object PackagePreview {
         (("files" -> preview.files.asJson) +: metadataObject).asJson
       }
     }
-
-  private def cleanS3Key(key: String): String =
-    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
 
   def fromFiles(
     fileUploads: List[FileUpload],
@@ -269,9 +266,6 @@ object PreviewFile {
 
   implicit val encoderS3File: Encoder[PreviewFile] = deriveEncoder[PreviewFile]
   implicit val s3Decoder: Decoder[PreviewFile] = deriveDecoder[PreviewFile]
-
-  private def cleanS3Key(key: String): String =
-    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
 
   def apply(file: FileUpload): PreviewFile =
     PreviewFile(

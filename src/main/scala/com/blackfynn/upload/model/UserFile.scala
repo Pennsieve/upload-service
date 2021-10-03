@@ -4,6 +4,7 @@ package com.blackfynn.upload.model
 
 import io.circe.{ Decoder, Encoder, HCursor }
 import io.circe.generic.semiauto.{ deriveEncoder }
+import com.pennsieve.models.Utilities.cleanS3Key
 
 case class UserFile(
   uploadId: Int,
@@ -16,9 +17,6 @@ case class UserFile(
 )
 
 object UserFile {
-
-  private def cleanS3Key(key: String): String =
-    key.replaceAll("[^a-zA-Z0-9./@-]", "_")
 
   implicit val encoder: Encoder[UserFile] = deriveEncoder[UserFile]
 
