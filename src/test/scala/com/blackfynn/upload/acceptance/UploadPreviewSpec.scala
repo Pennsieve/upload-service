@@ -11,7 +11,6 @@ import cats.data.EitherT
 import cats.implicits._
 import com.pennsieve.auth.middleware.DatasetId
 import com.pennsieve.models.FileType.ZIP
-//import com.pennsieve.models.Utilities.escapeName
 import com.pennsieve.models.{ FileType, PackageType, Role }
 import com.pennsieve.service.utilities.ContextLogger
 import com.pennsieve.test.AwaitableImplicits

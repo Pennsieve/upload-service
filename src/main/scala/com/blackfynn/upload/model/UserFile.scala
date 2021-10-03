@@ -2,7 +2,6 @@
 
 package com.blackfynn.upload.model
 
-//import com.pennsieve.models.Utilities.escapeName
 import io.circe.{ Decoder, Encoder, HCursor }
 import io.circe.generic.semiauto.{ deriveEncoder }
 

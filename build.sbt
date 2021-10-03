@@ -67,7 +67,7 @@ lazy val root = (project in file("."))
       "com.pennsieve"              %% "utilities"                      % UtilitiesVersion,
       "com.pennsieve"              %% "auth-middleware"                % "5.0.4",
 
-      "com.pennsieve"              %% "core-models"                    % "106-9ebbc7e",
+      "com.pennsieve"              %% "core-models"                    % "112-b6f0e93",
 
       "ch.qos.logback"              % "logback-classic"                % LogbackVersion,
       "ch.qos.logback"              % "logback-core"                   % LogbackVersion,
