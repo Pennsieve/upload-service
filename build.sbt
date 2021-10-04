@@ -84,6 +84,8 @@ lazy val root = (project in file("."))
       "org.typelevel"              %% "cats-core"                      % CatsVersion,
 
       "com.pennsieve"              %% "utilities"                      % UtilitiesVersion % Test classifier "tests",
+      "com.pennsieve"              %% "core-models"                    % "112-b6f0e93" % Test classifier "tests",
+
       "org.scalatest"              %% "scalatest"                      % "3.0.5"          % Test,
       "com.typesafe.akka"          %% "akka-stream-testkit"            % AkkaVersion      % Test,
       "com.typesafe.akka"          %% "akka-http-testkit"              % AkkaHttpVersion  % Test,
