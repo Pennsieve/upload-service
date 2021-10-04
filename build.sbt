@@ -67,7 +67,7 @@ lazy val root = (project in file("."))
       "com.pennsieve"              %% "utilities"                      % UtilitiesVersion,
       "com.pennsieve"              %% "auth-middleware"                % "5.0.4",
 
-      "com.pennsieve"              %% "core-models"                    % "112-b6f0e93",
+      "com.pennsieve"              %% "core-models"                    % "113-19b69f7",
 
       "ch.qos.logback"              % "logback-classic"                % LogbackVersion,
       "ch.qos.logback"              % "logback-core"                   % LogbackVersion,
@@ -84,7 +84,7 @@ lazy val root = (project in file("."))
       "org.typelevel"              %% "cats-core"                      % CatsVersion,
 
       "com.pennsieve"              %% "utilities"                      % UtilitiesVersion % Test classifier "tests",
-      "com.pennsieve"              %% "core-models"                    % "112-b6f0e93" % Test classifier "tests",
+      "com.pennsieve"              %% "core-models"                    % "113-19b69f7" % Test classifier "tests",
 
       "org.scalatest"              %% "scalatest"                      % "3.0.5"          % Test,
       "com.typesafe.akka"          %% "akka-stream-testkit"            % AkkaVersion      % Test,
