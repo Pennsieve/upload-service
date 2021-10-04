@@ -12,6 +12,7 @@ import cats.data.EitherT
 import cats.implicits._
 import com.pennsieve.auth.middleware.{ UserId }
 import com.pennsieve.models.FileTypeGrouping
+import com.pennsieve.models.Utilities.cleanS3Key
 import com.blackfynn.upload.alpakka.S3Requests.initiateMultipartUploadRequest
 import com.blackfynn.upload.alpakka.Signer.createSignedRequestT
 import com.blackfynn.upload.model.Eventual.Eventual
@@ -78,7 +79,7 @@ object Preview {
               .mapAsyncUnordered(config.preview.parallelism) { file =>
                 val initiatedUploadResponse: Eventual[MultipartUpload] =
                   initiateUpload(
-                    UploadUri(userId, preview.metadata.importId, file.fileName),
+                    UploadUri(userId, preview.metadata.importId, cleanS3Key(file.fileName)),
                     AES256,
                     file.chunkedUpload
                       .map(_.chunkSize) // TODO: don't need to store this after uploads-consumer stops reading
