@@ -57,7 +57,7 @@ class UploadPreviewSpec
         packagePreview.metadata.hasWorkflow shouldBe true
         packagePreview.metadata.fileType shouldBe ZIP
         packagePreview.metadata.packageName shouldBe "some^.zip"
-//        packagePreview.metadata.escapedPackageName shouldBe "some_.zip"
+        packagePreview.metadata.escapedPackageName shouldBe "some_.zip"
         packagePreview.metadata.packageType shouldBe PackageType.ZIP
         packagePreview.metadata.packageSubtype shouldBe "Compressed"
         packagePreview.metadata.groupSize shouldBe 100L
@@ -154,10 +154,10 @@ class UploadPreviewSpec
 
         packages.length shouldBe 1
         packages.head.metadata.packageName shouldBe "Test+MEF.mef"
-//        packages.head.metadata.escapedPackageName shouldBe "Test_MEF.mef"
+        packages.head.metadata.escapedPackageName shouldBe "Test_MEF.mef"
         packages.head.files.length shouldBe 1
         packages.head.files.head.fileName shouldBe "Test+MEF.mef"
-//        packages.head.files.head.escapedFileName shouldBe "Test_MEF.mef"
+        packages.head.files.head.escapedFileName shouldBe "Test_MEF.mef"
 
       }
     }
@@ -177,10 +177,10 @@ class UploadPreviewSpec
 
         packages.length shouldBe 1
         packages.head.metadata.packageName shouldBe "Test$MEF.mef"
-//        packages.head.metadata.escapedPackageName shouldBe "Test_MEF.mef"
+        packages.head.metadata.escapedPackageName shouldBe "Test_MEF.mef"
         packages.head.files.length shouldBe 1
         packages.head.files.head.fileName shouldBe "Test$MEF.mef"
-//        packages.head.files.head.escapedFileName shouldBe "Test_MEF.mef"
+        packages.head.files.head.escapedFileName shouldBe "Test_MEF.mef"
       }
     }
 
@@ -353,7 +353,7 @@ class UploadPreviewSpec
         )
 
         testImgPackage.metadata.escapedPreviewPath shouldBe Some(
-          FilePath("dat^a", "sub-1", "sa_m-1", "micros+copy")
+          FilePath("dat_a", "sub-1", "sa_m-1", "micros_copy")
         )
       }
     }
