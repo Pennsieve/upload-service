@@ -84,7 +84,6 @@ lazy val root = (project in file("."))
       "org.typelevel"              %% "cats-core"                      % CatsVersion,
 
       "com.pennsieve"              %% "utilities"                      % UtilitiesVersion % Test classifier "tests",
-
       "com.pennsieve"              %% "core-models"                    % "116-01617be" % Test classifier "tests",
 
       "org.scalatest"              %% "scalatest"                      % "3.0.5"          % Test,

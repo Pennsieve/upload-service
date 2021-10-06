@@ -2,9 +2,9 @@
 
 package com.blackfynn.upload.model
 
-import com.pennsieve.models.Utilities.escapeName
 import io.circe.{ Decoder, Encoder, HCursor }
 import io.circe.generic.semiauto.{ deriveEncoder }
+import com.pennsieve.models.Utilities.cleanS3Key
 
 case class UserFile(
   uploadId: Int,
@@ -25,7 +25,7 @@ object UserFile {
       for {
         uploadId <- c.downField("uploadId").as[Int]
         fileName <- c.downField("fileName").as[String]
-        escapedFileName <- c.getOrElse("escapedFileName")(escapeName(fileName))
+        escapedFileName <- c.getOrElse("escapedFileName")(cleanS3Key(fileName))
         size <- c.downField("size").as[Long]
         fileHash <- c.downField("fileHash").as[Option[FileHash]]
         chunkSize <- c.downField("chunkSize").as[Option[Long]]
@@ -53,7 +53,7 @@ object UserFile {
     new UserFile(
       uploadId = uploadId,
       fileName = fileName,
-      escapedFileName = escapeName(fileName),
+      escapedFileName = cleanS3Key(fileName),
       size = size,
       fileHash = fileHash,
       chunkSize = chunkSize,
@@ -72,7 +72,7 @@ object UserFile {
     new UserFile(
       uploadId = uploadId,
       fileName = fileName,
-      escapedFileName = escapeName(fileName),
+      escapedFileName = cleanS3Key(fileName),
       size = size,
       fileHash = fileHash,
       chunkSize = chunkSize,

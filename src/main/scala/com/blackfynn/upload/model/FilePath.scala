@@ -4,12 +4,13 @@ package com.blackfynn.upload.model
 
 import io.circe.syntax.EncoderOps
 import io.circe.{ Decoder, Encoder, Json }
-import com.pennsieve.models.Utilities._
+import com.pennsieve.models.Utilities.cleanS3Key
 
 // wasString ensures that if a filePath is sent as a string it will be returned as a string
 final case class FilePath(segments: List[String], wasString: Boolean = false) {
+
   def sanitize(): FilePath = {
-    copy(segments.map(escapeName))
+    copy(segments.map(cleanS3Key))
   }
 }
 

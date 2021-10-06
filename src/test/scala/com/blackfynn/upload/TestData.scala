@@ -31,7 +31,7 @@ import com.pennsieve.auth.middleware.{
 }
 import com.pennsieve.models.FileType.ZIP
 import com.pennsieve.models.PackageType.Unsupported
-import com.pennsieve.models.Utilities._
+import com.pennsieve.models.Utilities.cleanS3Key
 import com.pennsieve.models.{ NodeCodes, NodeId, Role }
 import com.pennsieve.service.utilities.ContextLogger
 import com.blackfynn.upload.ChunkPorts.{ CacheHash, SendChunk }
@@ -81,7 +81,7 @@ object TestData {
   val somePlusName: String = "some+.zip"
 
   val someZipName: String = "some^.zip"
-  val escapedSomeZipName: String = escapeName(someZipName)
+  val escapedSomeZipName: String = cleanS3Key(someZipName)
   val zipPackagePreview: PackagePreview =
     PackagePreview(
       PackagePreviewMetadata(

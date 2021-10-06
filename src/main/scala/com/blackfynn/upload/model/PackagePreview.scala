@@ -8,7 +8,7 @@ import java.util.UUID
 import akka.stream.alpakka.s3.auth.encodeHex
 import akka.util.ByteString
 import cats.data.NonEmptyList
-import com.pennsieve.models.Utilities._
+import com.pennsieve.models.Utilities.cleanS3Key
 import com.pennsieve.models.{ FileType, FileTypeGrouping, FileTypeInfo, PackageType }
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.syntax._
@@ -157,7 +157,7 @@ object PackagePreview {
         PackagePreview(
           metadata = PackagePreviewMetadata(
             packageName,
-            escapeName(packageName),
+            cleanS3Key(packageName),
             packageInfo.packageType,
             packageInfo.packageSubtype,
             fileType,
@@ -257,6 +257,7 @@ final case class PreviewFile(
     digest.update(fileName.getBytes)
     encodeHex(ByteString(digest.digest()))
   }
+
 }
 
 object PreviewFile {
@@ -270,7 +271,7 @@ object PreviewFile {
     PreviewFile(
       file.uploadId,
       file.fileName,
-      escapeName(file.fileName),
+      cleanS3Key(file.fileName),
       file.size,
       chunkedUpload = Some(ChunkedUpload(file.size))
     )
@@ -279,7 +280,7 @@ object PreviewFile {
     PreviewFile(
       uploadId,
       fileName,
-      escapeName(fileName),
+      cleanS3Key(fileName),
       size,
       chunkedUpload = Some(ChunkedUpload(size))
     )
@@ -294,7 +295,7 @@ object PreviewFile {
     PreviewFile(
       uploadId,
       fileName,
-      escapeName(fileName),
+      cleanS3Key(fileName),
       size,
       Some(MultipartUploadId(multipartUploadId)),
       Some(chunkedUpload)
@@ -308,14 +309,7 @@ object PreviewFile {
     multipartUploadId: Option[MultipartUploadId] = None,
     chunkedUpload: Option[ChunkedUpload] = None
   ): PreviewFile =
-    new PreviewFile(
-      uploadId,
-      fileName.replace("+", "%2B"),
-      escapedFileName,
-      size,
-      multipartUploadId,
-      chunkedUpload
-    )
+    new PreviewFile(uploadId, fileName, escapedFileName, size, multipartUploadId, chunkedUpload)
 }
 
 final case class ChunkedUpload(chunkSize: Long, totalChunks: Int)
