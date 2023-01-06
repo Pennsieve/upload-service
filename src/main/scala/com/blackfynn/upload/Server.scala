@@ -18,7 +18,7 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.alpakka.s3._
 import akka.stream.alpakka.s3.impl.MultipartUpload
 import akka.stream.scaladsl.{ Flow, Keep, RestartSource, Sink, Source, SourceQueueWithComplete }
-import akka.stream.{ ActorMaterializer, OverflowStrategy, QueueOfferResult, ThrottleMode }
+import akka.stream.{ OverflowStrategy, QueueOfferResult, ThrottleMode }
 import akka.{ Done, NotUsed }
 import cats.data.EitherT
 import cats.implicits._
@@ -173,7 +173,6 @@ object Server extends App {
   )
 
   implicit val actorSystem: ActorSystem = ActorSystem("UploadService")
-  implicit val actorMaterializer: ActorMaterializer = ActorMaterializer()
   implicit val scheduler: Scheduler = actorSystem.scheduler
   implicit val ec: ExecutionContext = actorSystem.dispatcher
   implicit val log: ContextLogger = new ContextLogger()

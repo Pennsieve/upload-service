@@ -2,10 +2,10 @@
 
 package com.blackfynn.upload
 
-import java.util.UUID
+import akka.actor.ActorSystem
 
+import java.util.UUID
 import akka.http.scaladsl.model.HttpRequest
-import akka.stream.ActorMaterializer
 import akka.stream.alpakka.s3.impl.{ MultipartUpload, S3Location }
 import akka.stream.scaladsl.Sink
 import akka.util.ByteString
@@ -27,7 +27,7 @@ class FakeS3Store extends AwaitableImplicits {
   val completeUploadRequests: mutable.ArrayBuffer[HttpRequest] = mutable.ArrayBuffer.empty
   var markedComplete: Boolean = false
 
-  def sendChunk(uri: String)(implicit mat: ActorMaterializer): SendChunk =
+  def sendChunk(uri: String)(implicit actor: ActorSystem): SendChunk =
     request => {
       val freshBytes = request.entity.dataBytes.runWith(Sink.seq).awaitFinite().toList
 
