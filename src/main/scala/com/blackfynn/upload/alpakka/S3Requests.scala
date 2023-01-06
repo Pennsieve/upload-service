@@ -8,9 +8,9 @@ import akka.http.scaladsl.model.Uri.{ Authority, Query }
 import akka.http.scaladsl.model.headers.Host
 import akka.http.scaladsl.model.{ ContentTypes, RequestEntity, _ }
 import akka.http.scaladsl.unmarshalling.{ FromEntityUnmarshaller, Unmarshaller }
-import akka.stream.alpakka.s3.S3Settings
-import akka.stream.alpakka.s3.impl._
+import akka.stream.alpakka.s3.{ S3Headers, S3Settings }
 import com.blackfynn.upload.model.Eventual.{ Eventual, EventualTConverter }
+import akka.stream.alpakka.s3.ImplHelper._
 
 import scala.collection.immutable.Seq
 import scala.concurrent.{ ExecutionContext, Future }
@@ -33,7 +33,7 @@ object S3Requests {
     conf: S3Settings
   ): HttpRequest =
     s3Request(s3Location, HttpMethods.POST, _.withQuery(Query("uploads")))
-      .withDefaultHeaders(s3Headers.headers: _*)
+      .withDefaultHeaders(s3Headers.toSeq())
       .withEntity(HttpEntity.empty(contentType))
 
   def uploadPartRequest(
@@ -48,7 +48,7 @@ object S3Requests {
       upload.s3Location,
       HttpMethods.PUT,
       _.withQuery(Query("partNumber" -> partNumber.toString, "uploadId" -> upload.uploadId))
-    ).withDefaultHeaders(s3Headers.headers: _*)
+    ).withDefaultHeaders(s3Headers.toSeq())
       .withEntity(entity)
 
   def completeMultipartUploadRequest(
@@ -112,7 +112,9 @@ object S3Requests {
     conf: S3Settings
   ): HttpRequest =
     HttpRequest(method)
-      .withHeaders(Host(requestAuthority(s3Location.bucket, conf.s3RegionProvider.getRegion)))
+      .withHeaders(
+        Host(requestAuthority(s3Location.bucket, conf.s3RegionProvider.getRegion.toString))
+      )
       .withUri(uriFn(requestUri(s3Location.bucket, Some(s3Location.key))))
 
   @throws(classOf[IllegalUriException])
@@ -122,7 +124,7 @@ object S3Requests {
   )(implicit
     conf: S3Settings
   ): Authority =
-    conf.proxy match {
+    conf.forwardProxy match {
       case None =>
         if (!conf.pathStyleAccess) {
           val bucketRegex = "[^a-z0-9\\-\\.]{1,255}|[\\.]{2,}".r
@@ -171,17 +173,20 @@ object S3Requests {
       someKey.split("/").foldLeft(basePath)((acc, p) => acc / p)
     }
     val uri =
-      Uri(path = path, authority = requestAuthority(bucket, conf.s3RegionProvider.getRegion))
+      Uri(
+        path = path,
+        authority = requestAuthority(bucket, conf.s3RegionProvider.getRegion.toString)
+      )
 
-    (conf.proxy, conf.endpointUrl) match {
+    (conf.forwardProxy, conf.endpointUrl) match {
       case (_, Some(endpointUri)) =>
         uri
           .withScheme(Uri(endpointUri).scheme)
-          .withHost(requestAuthority(bucket, conf.s3RegionProvider.getRegion).host)
+          .withHost(requestAuthority(bucket, conf.s3RegionProvider.getRegion.toString).host)
       case (None, _) =>
         uri
           .withScheme("https")
-          .withHost(requestAuthority(bucket, conf.s3RegionProvider.getRegion).host)
+          .withHost(requestAuthority(bucket, conf.s3RegionProvider.getRegion.toString).host)
       case (Some(proxy), _) =>
         uri.withPort(proxy.port).withScheme(proxy.scheme).withHost(proxy.host)
     }

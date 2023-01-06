@@ -1,24 +1,23 @@
-lazy val AkkaHttpVersion = "10.1.11"
-lazy val AkkaVersion = "2.6.5"
+lazy val AkkaHttpVersion = "10.2.9"
+lazy val AkkaVersion = "2.6.19"
 lazy val AwsVersion = "1.11.538"
-lazy val CatsVersion = "1.6.0"
-lazy val CirceVersion = "0.11.1"
+lazy val CatsVersion = "2.6.1"
+lazy val CirceVersion = "0.14.1"
 lazy val LogbackVersion = "1.2.3"
-lazy val UtilitiesVersion = "3-cd7539b"
+lazy val UtilitiesVersion = "4-55953e4"
+lazy val coreModelsVersion = "230-d06f311"
 
 lazy val root = (project in file("."))
   .enablePlugins(AutomateHeaderPlugin)
   .settings(
     inThisBuild(List(
       organization := "com.blackfynn",
-      scalaVersion := "2.12.11",
+      scalaVersion := "2.13.8",
       version := "0.1.0-SNAPSHOT",
       scalacOptions ++= Seq(
         "-language:implicitConversions",
         "-language:postfixOps",
-        "-Ypartial-unification",
         "-Xmacro-settings:materialize-derivations",
-        "-Xmax-classfile-name", "100",
         "-feature",
         "-deprecation",
         "-encoding", "UTF-8",
@@ -26,7 +25,6 @@ lazy val root = (project in file("."))
         "-unchecked",
         "-Xfuture",
         "-Xlint",
-        "-Yno-adapted-args",
         "-Ywarn-numeric-widen",
         "-Ywarn-value-discard"
       ),
@@ -49,25 +47,25 @@ lazy val root = (project in file("."))
       "Copyright (c) 2018 Blackfynn, Inc. All Rights Reserved."
     )),
     headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),
-    test in assembly := {},
+    assembly / test := {},
     Test / fork := true,
     Test / testForkedParallel := true,
     libraryDependencies ++= Seq(
       "com.typesafe.akka"          %% "akka-stream"                    % AkkaVersion,
       "com.typesafe.akka"          %% "akka-http"                      % AkkaHttpVersion,
-      "de.heikoseeberger"          %% "akka-http-circe"                % "1.27.0",
+      "de.heikoseeberger"          %% "akka-http-circe"                % "1.39.2",
 
       "com.amazonaws"               % "aws-java-sdk-s3"                % AwsVersion,
       "com.amazonaws"               % "aws-java-sdk-dynamodb"          % AwsVersion,
-      "com.lightbend.akka"         %% "akka-stream-alpakka-s3"         % "1.0-M1",
+      "com.lightbend.akka"         %% "akka-stream-alpakka-s3"         % "4.0.0",
 
       "org.apache.commons"          % "commons-io"                     % "1.3.2",
 
-      "com.pennsieve"              %% "service-utilities"              % "7-3a0e351",
+      "com.pennsieve"              %% "service-utilities"              % "9-b838dd9",
       "com.pennsieve"              %% "utilities"                      % UtilitiesVersion,
-      "com.pennsieve"              %% "auth-middleware"                % "5.0.4",
+      "com.pennsieve"              %% "auth-middleware"                % "5.2.0",
 
-      "com.pennsieve"              %% "core-models"                    % "120-01770a6",
+      "com.pennsieve"              %% "core-models"                    % coreModelsVersion,
 
       "ch.qos.logback"              % "logback-classic"                % LogbackVersion,
       "ch.qos.logback"              % "logback-core"                   % LogbackVersion,
@@ -75,32 +73,31 @@ lazy val root = (project in file("."))
 
       "io.circe"                   %% "circe-core"                     % CirceVersion,
       "io.circe"                   %% "circe-generic"                  % CirceVersion,
-      "io.circe"                   %% "circe-java8"                    % CirceVersion,
 
-      "com.github.pureconfig"      %% "pureconfig"                     % "0.9.1",
+      "com.github.pureconfig"      %% "pureconfig"                     % "0.17.1",
 
-      "com.typesafe.scala-logging" %% "scala-logging"                  % "3.9.0",
+      "com.typesafe.scala-logging" %% "scala-logging"                  % "3.9.4",
 
       "org.typelevel"              %% "cats-core"                      % CatsVersion,
 
       "com.pennsieve"              %% "utilities"                      % UtilitiesVersion % Test classifier "tests",
-      "com.pennsieve"              %% "core-models"                    % "120-01770a6" % Test classifier "tests",
+      "com.pennsieve"              %% "core-models"                    % coreModelsVersion % Test classifier "tests",
 
-      "org.scalatest"              %% "scalatest"                      % "3.0.5"          % Test,
+      "org.scalatest"              %% "scalatest"                      % "3.2.12"          % Test,
       "com.typesafe.akka"          %% "akka-stream-testkit"            % AkkaVersion      % Test,
-      "com.typesafe.akka"          %% "akka-http-testkit"              % AkkaHttpVersion  % Test,
+      "com.typesafe.akka"          %% "akka-http-testkit"              % AkkaHttpVersion  % Test
     ),
 
     coverageExcludedPackages := "com.blackfynn.upload.server\\..*;"
       + "com.blackfynn.upload.clients\\..*;"
       + "com.blackfynn.upload.alpakka\\..*;"
       + "com.blackfynn.upload.Server",
-    coverageMinimum := 86,
+    coverageMinimumStmtTotal := 86,
     coverageFailOnMinimum := true,
 
     scalafmtOnCompile := true,
 
-    dockerfile in docker := {
+    docker / dockerfile := {
       val artifact: File = assembly.value
       val artifactTargetPath = s"/app/${artifact.name}"
       new Dockerfile {
@@ -111,7 +108,7 @@ lazy val root = (project in file("."))
         cmd("--service", "upload-service", "exec", "app/run.sh", artifactTargetPath)
       }
     },
-    imageNames in docker := Seq(
+    docker / imageNames := Seq(
       ImageName("pennsieve/upload-service:latest")
     )
   ).enablePlugins(DockerPlugin)

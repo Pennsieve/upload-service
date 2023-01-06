@@ -4,12 +4,10 @@ package com.blackfynn.upload.send
 
 import java.io.{ BufferedInputStream, ByteArrayInputStream }
 import java.security.MessageDigest
-
 import akka.http.scaladsl.model.Multipart.FormData
 import akka.http.scaladsl.model.{ ContentTypes, HttpEntity, Multipart }
 import akka.stream.Materializer
 import akka.stream.alpakka.s3.S3Settings
-import akka.stream.alpakka.s3.impl.{ MultipartUpload, S3Location }
 import akka.stream.scaladsl.{ Sink, Source }
 import akka.util.ByteString
 import cats.data.EitherT
@@ -17,7 +15,7 @@ import cats.implicits._
 import com.pennsieve.auth.middleware.UserId
 import com.pennsieve.service.utilities.{ ContextLogger, LogContext, Tier }
 import com.blackfynn.upload.alpakka.S3Requests.uploadPartRequest
-import com.blackfynn.upload.alpakka.Signer
+import com.blackfynn.upload.alpakka.{ MultipartUpload, S3Location, Signer }
 import com.blackfynn.upload.model.Constants.MaxChunkSize
 import com.blackfynn.upload.model.Eventual.Eventual
 import com.blackfynn.upload.model.{ ChunkHash, ChunkHashId, ImportId, MultipartUploadId, UploadUri }
