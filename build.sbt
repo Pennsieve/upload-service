@@ -23,7 +23,6 @@ lazy val root = (project in file("."))
         "-encoding", "UTF-8",
         "-language:experimental.macros",
         "-unchecked",
-        "-Xfuture",
         "-Xlint",
         "-Ywarn-numeric-widen",
         "-Ywarn-value-discard"

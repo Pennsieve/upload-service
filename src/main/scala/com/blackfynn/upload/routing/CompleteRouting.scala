@@ -16,7 +16,7 @@ import scala.concurrent.ExecutionContext
 
 object CompleteRouting {
   private val completeParameters =
-    parameters(('datasetId.as[String], 'destinationId.as[String].?, 'append.as[Boolean].?))
+    parameters("datasetId".as[String], "destinationId".as[String].?, "append".as[Boolean].?)
 
   type Complete = CompleteRouting.type
   implicit val tier: Tier[Complete] = Tier[Complete]

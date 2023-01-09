@@ -32,7 +32,7 @@ object HashRouting {
     mat: Materializer,
     log: ContextLogger
   ): Route =
-    (path("hash" / "id" / Segment) & parameters(('fileName, 'userId.as[Int].?))) {
+    (path("hash" / "id" / Segment) & parameters("fileName", "userId".as[Int].?)) {
       (importIdString, fileName, maybeUserId) =>
         implicit val hashPorts: HashPorts = ports.hash
 

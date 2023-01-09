@@ -25,9 +25,8 @@ object PreviewRouting {
   type Preview = PreviewRouting.type
   implicit val tier: Tier[Preview] = Tier[Preview]
 
-  private val previewParameters = parameters(
-    ('append.as[Boolean], 'dataset_id.as[Int].?, 'destinationId.as[String].?)
-  )
+  private val previewParameters =
+    parameters("append".as[Boolean], "dataset_id".as[Int].?, "destinationId".as[String].?)
 
   def apply(
     claim: Jwt.Claim

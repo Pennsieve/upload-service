@@ -29,9 +29,6 @@ import scala.util.{ Failure, Success }
 
 object StreamedChunkRouting {
 
-  private val chunkedPathParameters =
-    ('filename, 'chunkNumber.as[Int], 'multipartId, 'chunkChecksum)
-
   type StreamedChunk = StreamedChunkRouting.type
   implicit val tier: Tier[StreamedChunk] = Tier[StreamedChunk]
 
@@ -49,7 +46,12 @@ object StreamedChunkRouting {
     loadMonitor: LoadMonitor
   ): Route =
     withSizeLimit(config.maxChunkSize) {
-      (path("chunk" / baseUploadPath) & parameters(chunkedPathParameters)) {
+      (path("chunk" / baseUploadPath) & parameters(
+        "filename",
+        "chunkNumber".as[Int],
+        "multipartId",
+        "chunkChecksum"
+      )) {
         (
           _,
           importIdString: String,

@@ -2,7 +2,7 @@
 
 package com.blackfynn.upload.alpakka
 
-import akka.stream.alpakka.s3.auth.encodeHex
+import akka.stream.alpakka.s3.ImplHelper.encodeHex
 import com.amazonaws.auth.{ AWSCredentialsProvider, AWSCredentials => AmzAWSCredentials }
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec

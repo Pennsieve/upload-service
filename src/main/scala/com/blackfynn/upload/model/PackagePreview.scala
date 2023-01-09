@@ -5,7 +5,7 @@ package com.blackfynn.upload.model
 import java.security.MessageDigest
 import java.util.UUID
 
-import akka.stream.alpakka.s3.auth.encodeHex
+import akka.stream.alpakka.s3.ImplHelper.encodeHex
 import akka.util.ByteString
 import cats.data.NonEmptyList
 import com.pennsieve.models.Utilities.cleanS3Key

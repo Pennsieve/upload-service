@@ -3,14 +3,17 @@
 package com.blackfynn.upload
 
 import akka.stream.Materializer
-import akka.stream.alpakka.s3.S3Settings
-import akka.stream.alpakka.s3.acl.CannedAcl
-import akka.stream.alpakka.s3.impl.ServerSideEncryption.AES256
-import akka.stream.alpakka.s3.impl._
+import akka.stream.alpakka.s3.{ MetaHeaders, S3Headers, S3Settings }
+import akka.stream.alpakka.s3.headers.{ CannedAcl, ServerSideEncryption }
+import com.blackfynn.upload.alpakka.S3Location
+//import akka.stream.alpakka.s3.acl.CannedAcl
+//import akka.stream.alpakka.s3.impl.ServerSideEncryption.AES256
+// import akka.stream.alpakka.s3.impl._
 import akka.stream.scaladsl.{ Sink, Source }
 import cats.data.EitherT
 import cats.implicits._
-import com.pennsieve.auth.middleware.{ UserId }
+import com.blackfynn.upload.alpakka.MultipartUpload
+import com.pennsieve.auth.middleware.UserId
 import com.pennsieve.models.FileTypeGrouping
 import com.pennsieve.models.Utilities.cleanS3Key
 import com.blackfynn.upload.alpakka.S3Requests.initiateMultipartUploadRequest
@@ -80,7 +83,7 @@ object Preview {
                 val initiatedUploadResponse: Eventual[MultipartUpload] =
                   initiateUpload(
                     UploadUri(userId, preview.metadata.importId, cleanS3Key(file.fileName)),
-                    AES256,
+                    ServerSideEncryption.aes256(),
                     file.chunkedUpload
                       .map(_.chunkSize) // TODO: don't need to store this after uploads-consumer stops reading
                   )
@@ -121,8 +124,11 @@ object Preview {
         val headers =
           metadata match {
             case Some(metaheaders) =>
-              S3Headers(sse.headers ++ metaheaders.headers :+ CannedAcl.Private.header)
-            case None => S3Headers(sse.headers :+ CannedAcl.Private.header)
+              S3Headers()
+                .withServerSideEncryption(sse)
+                .withMetaHeaders(metaheaders)
+                .withCannedAcl(CannedAcl.Private)
+            case None => S3Headers().withServerSideEncryption(sse).withCannedAcl(CannedAcl.Private)
           }
 
         createSignedRequestT {

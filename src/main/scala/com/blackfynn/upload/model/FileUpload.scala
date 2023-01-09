@@ -3,7 +3,7 @@
 package com.blackfynn.upload.model
 
 import com.pennsieve.models.FileExtensions.fileTypeMap
-import com.pennsieve.models._
+import com.pennsieve.models.{ FileType, FileTypeInfo }
 import com.pennsieve.models.FileType.GenericData
 import org.apache.commons.io.FilenameUtils
 

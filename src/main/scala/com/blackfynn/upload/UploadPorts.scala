@@ -3,7 +3,7 @@
 package com.blackfynn.upload
 
 import akka.http.scaladsl.model.{ HttpRequest, HttpResponse }
-import akka.stream.alpakka.s3.impl.MultipartUpload
+import com.blackfynn.upload.alpakka.MultipartUpload
 import akka.stream.scaladsl.Source
 import cats.data.NonEmptyList
 import com.amazonaws.services.s3.model.PartListing

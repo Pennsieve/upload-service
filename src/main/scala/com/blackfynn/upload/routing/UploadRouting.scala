@@ -28,7 +28,7 @@ object UploadRouting {
 
   private val exceptionHandler: ExceptionHandler =
     ExceptionHandler {
-      case _: TooManyRequests.type => complete(StatusCodes.TooManyRequests)
+      // case _: TooManyRequests.type => complete(StatusCodes.TooManyRequests)
       case _: TimeoutException => complete(StatusCodes.TooManyRequests)
       case e: EntityStreamSizeException =>
         complete(StatusCodes.PayloadTooLarge -> e.getMessage)

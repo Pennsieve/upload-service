@@ -129,7 +129,7 @@ object FineUploaderChunkUpload {
             case (payload: FineUploaderPayload, part: FormData.BodyPart) => {
               part.name match {
                 case `qqFile` =>
-                  part.entity.dataBytes.runWith(concatFineChunks).map {
+                  part.entity.dataBytes.runWith(concatFineChunks()).map {
                     case (bytes: ByteString, digest: MessageDigest) => {
                       loadMonitor.decrement(config.maxChunkSize - bytes.size.toLong)
                       payload

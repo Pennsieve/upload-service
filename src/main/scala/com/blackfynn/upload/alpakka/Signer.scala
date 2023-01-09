@@ -10,7 +10,7 @@ import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.{ HttpHeader, HttpRequest }
 import akka.stream.Materializer
 import akka.stream.alpakka.s3.S3Settings
-import akka.stream.alpakka.s3.auth.{ digest, encodeHex }
+import akka.stream.alpakka.s3.ImplHelper.{ digest, encodeHex }
 import com.amazonaws.auth
 import com.amazonaws.auth.AWSCredentialsProvider
 import com.blackfynn.upload.model.Eventual.{ Eventual, EventualTConverter }
@@ -42,7 +42,7 @@ object Signer {
       request = request,
       key = SigningKey(
         settings.credentialsProvider,
-        CredentialScope(LocalDate.now(), settings.s3RegionProvider.getRegion, "s3")
+        CredentialScope(LocalDate.now(), settings.s3RegionProvider.getRegion.toString, "s3")
       ),
       maybeHash = maybeHash
     )

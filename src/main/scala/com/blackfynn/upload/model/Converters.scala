@@ -2,8 +2,8 @@
 
 package com.blackfynn.upload.model
 
-import akka.stream.alpakka.s3.impl.{ MultipartUpload, S3Location }
 import com.blackfynn.upload.UploadConfig
+import com.blackfynn.upload.alpakka.{ MultipartUpload, S3Location }
 
 object Converters {
 

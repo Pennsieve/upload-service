@@ -2,10 +2,11 @@
 
 package com.blackfynn.upload.model
 
-import akka.stream.alpakka.s3.auth.encodeHex
 import akka.util.ByteString
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.{ Decoder, Encoder }
+
+import akka.stream.alpakka.s3.ImplHelper.encodeHex
 
 final case class FileHash(hash: String)
 

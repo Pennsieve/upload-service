@@ -7,13 +7,13 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.RequestContext
 import akka.stream.Materializer
 import akka.stream.alpakka.s3.S3Settings
-import akka.stream.alpakka.s3.impl.S3Location
 import akka.stream.scaladsl.{ Sink, Source }
 import akka.util.ByteString
 import cats.data.EitherT
 import cats.implicits._
 import com.pennsieve.service.utilities.{ ContextLogger, Tier }
 import com.blackfynn.upload.Status.{ createListRequest, getAllParts, InvalidPreviewException }
+import com.blackfynn.upload.alpakka.S3Location
 import com.blackfynn.upload.alpakka.S3Requests.{ completeMultipartUploadRequest, headObjectRequest }
 import com.blackfynn.upload.alpakka.Signer._
 import com.blackfynn.upload.model.Converters.multipartUpload

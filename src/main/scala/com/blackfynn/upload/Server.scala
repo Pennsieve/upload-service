@@ -7,7 +7,6 @@ import java.time.{ ZoneOffset, ZonedDateTime }
 import java.util
 import java.util.concurrent.atomic.AtomicLong
 import java.util.function.LongUnaryOperator
-
 import akka.actor.{ ActorSystem, Scheduler }
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.IncomingConnection
@@ -16,9 +15,9 @@ import akka.http.scaladsl.model.{ HttpRequest, HttpResponse }
 import akka.http.scaladsl.settings.{ ConnectionPoolSettings, ServerSettings }
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.alpakka.s3._
-import akka.stream.alpakka.s3.impl.MultipartUpload
+import com.blackfynn.upload.alpakka.MultipartUpload
 import akka.stream.scaladsl.{ Flow, Keep, RestartSource, Sink, Source, SourceQueueWithComplete }
-import akka.stream.{ OverflowStrategy, QueueOfferResult, ThrottleMode }
+import akka.stream.{ OverflowStrategy, QueueOfferResult, RestartSettings, ThrottleMode }
 import akka.{ Done, NotUsed }
 import cats.data.EitherT
 import cats.implicits._
@@ -67,7 +66,7 @@ trait LoadMonitor {
 
 object MemoryLoadMonitor {
   val MEMORY_CEILING: Long = {
-    val rt = Runtime.getRuntime()
+    val rt = Runtime.getRuntime
     val freeMemory: Double = (rt.maxMemory - (rt.totalMemory - rt.freeMemory)).toDouble
     (freeMemory * 0.9).toLong
   }
@@ -184,7 +183,8 @@ object Server extends App {
 
   implicit val s3Settings: S3Settings =
     S3Settings(actorSystem.settings.config)
-      .copy(credentialsProvider = credentialsProvider, s3RegionProvider = awsRegionProvider)
+      .withCredentialsProvider(credentialsProvider)
+      .withS3RegionProvider(awsRegionProvider)
 
   private val dynamoClient: AmazonDynamoDBAsync = AmazonDynamoDBAsyncClientBuilder.defaultClient()
 
@@ -218,7 +218,7 @@ object Server extends App {
       case ((Success(resp), p)) => p.success(resp)
       case ((Failure(e), p)) => p.failure(e)
     }))(Keep.left)
-    .run
+    .run()
 
   // Note: this is intended for short-lived requests to AWS
   private def s3PooledDispatcher(request: HttpRequest): Future[HttpResponse] = {
@@ -310,7 +310,7 @@ object Server extends App {
                 log.noContext.error(
                   s"InitiateUpload failed for ${request.uri} S3 Response status $status error $err"
                 )
-                new S3Exception(err).asLeft
+                S3Exception(err, status).asLeft
               }
           }
           .recover {
@@ -345,14 +345,14 @@ object Server extends App {
                     case e => e.asLeft
                   }
 
-              case HttpResponse(_, _, entity, _) =>
+              case HttpResponse(status, _, entity, _) =>
                 Unmarshal(entity)
                   .to[String]
                   .map { err =>
                     log.noContext.error(
                       s"UploadChunk failed to send chunk ${request.uri} S3 Response status ${response.status} error $err"
                     )
-                    new S3Exception(err).asLeft
+                    S3Exception(err, status).asLeft
                   }
             }
           }
@@ -381,11 +381,11 @@ object Server extends App {
               case HttpResponse(NotFound, _, _, _) =>
                 Future(Option.empty[PartListing].asRight[Throwable])
 
-              case HttpResponse(_, _, entity, _) =>
+              case HttpResponse(status, _, entity, _) =>
                 Unmarshal(entity).to[String].map { err =>
                   log.noContext
                     .error(s"ListParts parts request ${request.uri} failed with error $err")
-                  new S3Exception(err).asLeft
+                  S3Exception(err, status).asLeft
                 }
             }
           }
@@ -413,12 +413,12 @@ object Server extends App {
                     case e => e.asLeft
                   }
 
-              case HttpResponse(_, _, entity, _) =>
+              case HttpResponse(status, _, entity, _) =>
                 Unmarshal(entity)
                   .to[String]
                   .map { err =>
                     log.noContext.error(s"CompleteUpload failed with $err")
-                    new S3Exception(err).asLeft
+                    S3Exception(err, status).asLeft
                   }
             }
           }
@@ -470,10 +470,10 @@ object Server extends App {
               entity.discardBytes()
               Future.successful(false.asRight[Throwable])
 
-            case HttpResponse(_, _, entity, _) =>
+            case HttpResponse(status, _, entity, _) =>
               Unmarshal(entity)
                 .to[String]
-                .map(err => new S3Exception(err).asLeft)
+                .map(err => S3Exception(err, status).asLeft)
           }
       }
 
@@ -540,7 +540,10 @@ object Server extends App {
   val settings: ServerSettings = ServerSettings(actorSystem)
 
   val serverSource: Source[IncomingConnection, Future[Http.ServerBinding]] =
-    Http().bind(config.host, config.port, settings = settings)
+    Http()
+      .newServerAt(config.host, config.port)
+      .withSettings(settings = settings)
+      .connectionSource()
 
   val handler: Flow[HttpRequest, HttpResponse, NotUsed] = UploadRouting(config, ports)
 
@@ -556,7 +559,9 @@ object Server extends App {
 
   // https://blog.colinbreck.com/backoff-and-retry-error-handling-for-akka-streams/
   val serve: Future[Done] = RestartSource
-    .withBackoff(minBackoff = 100.milliseconds, maxBackoff = 2.seconds, randomFactor = 0) { () =>
+    .withBackoff(
+      RestartSettings(minBackoff = 100.milliseconds, maxBackoff = 2.seconds, randomFactor = 0)
+    ) { () =>
       serverSource
         .throttle(
           elements = config.maxRequestsPerSecond,

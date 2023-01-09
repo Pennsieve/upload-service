@@ -23,7 +23,7 @@ import scala.concurrent.{ ExecutionContext, Future, TimeoutException }
 
 object FineUploaderChunkRouting {
 
-  private val chunkedPathParameters = 'multipartId
+  private val chunkedPathParameters = "multipartId"
   private val pathWithParameters =
     path("fineuploaderchunk" / baseUploadPath) & parameters(chunkedPathParameters)
 
