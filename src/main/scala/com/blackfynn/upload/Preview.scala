@@ -172,12 +172,12 @@ object Preview {
                 java.util.UUID.randomUUID.toString // unique string to group the rest of the files individually
             }
 
-            val files = map getOrElse (key, List.empty[FileUpload])
+            val files = map.getOrElse(key, List.empty[FileUpload])
             val updatedFiles =
               if (file.isMasterFile) file :: files
               else files :+ file
 
-            map updated (key, updatedFiles)
+            map.updated(key, updatedFiles)
         }
 
         val groups = groupMap.values.toList
@@ -222,8 +222,11 @@ object Preview {
     val (leftoverAnnotations, updatedFiles) = files
       .foldLeft((annotationsByName, List.empty[FileUpload])) {
         case ((leftover, accumulator), file) =>
-          val related = leftover getOrElse (file.baseName, List
-            .empty[FileUpload])
+          val related = leftover.getOrElse(
+            file.baseName,
+            List
+              .empty[FileUpload]
+          )
           val attached = file.copy(annotations = related)
 
           (leftover - file.baseName, attached :: accumulator)

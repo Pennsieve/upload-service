@@ -6,7 +6,7 @@ import akka.http.scaladsl.model.{ HttpRequest, HttpResponse }
 import com.blackfynn.upload.alpakka.MultipartUpload
 import akka.stream.scaladsl.Source
 import cats.data.NonEmptyList
-import com.amazonaws.services.s3.model.PartListing
+import software.amazon.awssdk.services.s3.model.ListMultipartUploadsResponse
 import com.blackfynn.upload.ChunkPorts.{ CacheHash, SendChunk }
 import com.blackfynn.upload.CompletePorts._
 import com.blackfynn.upload.HashPorts.GetChunkHashes
@@ -24,7 +24,7 @@ final case class UploadPorts(
 )
 
 object UploadPorts {
-  type ListParts = HttpRequest => Eventual[Option[PartListing]]
+  type ListParts = HttpRequest => Eventual[Option[ListMultipartUploadsResponse]]
   type GetPreview = ImportId => Eventual[PackagePreview]
   type CheckFileExists = HttpRequest => Eventual[Boolean]
 

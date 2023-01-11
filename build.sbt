@@ -1,6 +1,7 @@
 lazy val AkkaHttpVersion = "10.2.9"
 lazy val AkkaVersion = "2.6.19"
 lazy val AwsVersion = "1.11.538"
+lazy val AwsV2Version = "2.15.58"
 lazy val CatsVersion = "2.6.1"
 lazy val CirceVersion = "0.14.1"
 lazy val LogbackVersion = "1.2.3"
@@ -54,7 +55,7 @@ lazy val root = (project in file("."))
       "com.typesafe.akka"          %% "akka-http"                      % AkkaHttpVersion,
       "de.heikoseeberger"          %% "akka-http-circe"                % "1.39.2",
 
-      "com.amazonaws"               % "aws-java-sdk-s3"                % AwsVersion,
+      "software.amazon.awssdk"      % "s3"                             % AwsV2Version,
       "com.amazonaws"               % "aws-java-sdk-dynamodb"          % AwsVersion,
       "com.lightbend.akka"         %% "akka-stream-alpakka-s3"         % "4.0.0",
 

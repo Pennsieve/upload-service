@@ -32,7 +32,7 @@ object FileUpload {
     depth: Option[Int]
   ): FileUpload = {
 
-    def getFileType: String => FileType = fileTypeMap getOrElse (_, GenericData)
+    def getFileType: String => FileType = fileTypeMap.getOrElse(_, GenericData)
 
     def splitFileName(fileName: String): (String, String) = {
       // if one exists, return the first extension from the map that the file name ends with
